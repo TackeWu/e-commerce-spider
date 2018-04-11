@@ -4,49 +4,51 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from EvaluateCrawl.dbs import NemoCfgMongoClient
 from EvaluateCrawl.items import TaobaoItem,TmallItem,TmallCommentItem,TaobaoCommentItem
 from EvaluateCrawl.items import JDItem,JDCommentItem
 import csv
-
+import time
 
 class SpiderPipeline(object):
     mongo_db_ali = "data_ali"
     mongo_db_jd = "data_jd"
+    str_date = time.strftime("_%m_%d", time.localtime())
 
     def open_spider(self,spider):
 
         if spider.name == "jd_spider":
-            f = open('jd_item.csv','w+')
-            fieldnames = ['Itemid', 'Commenturl', 'Promowords', 'Storename', 'Price', 'Searchterms', 'Itemurl', 'Commentcount', 'Hotcomment', 'Itemwords']
+            f = open('./data/jd_item'+self.str_date+'.csv','w+')
+            fieldnames = JDItem().fields
             print fieldnames
             self.jd_item = csv.DictWriter(f,fieldnames=fieldnames)
             self.jd_item.writeheader()
 
-            f = open('jd_comment.csv','w+')
-            fieldnames = ['Itemid', 'Isreplies', 'Referencetime', 'Referencename', 'Userid', 'Ordercommentcontent', 'Repliescontent', 'Content', 'Userlevel', 'Searchterms', 'Userclient', 'Isordercomment', 'Commenttime', 'Nickname', 'Ismobile']
+            f = open('./data/jd_comment'+self.str_date+'.csv','w+')
+            fieldnames = JDCommentItem.fields
             print fieldnames
             self.jd_comment = csv.DictWriter(f,fieldnames=fieldnames)
             self.jd_comment.writeheader()
 
         elif spider.name == "tb_spider":
-            f = open('taobao_item.csv','w')
-            fieldnames = TaobaoItem().keys()
+            f = open('./data/taobao_item'+self.str_date+'.csv','w+')
+            fieldnames = TaobaoItem().fields
             self.taobao_item = csv.DictWriter(f,fieldnames=fieldnames)
             self.taobao_item.writeheader()
 
-            f = open('taobao_comment.csv','w')
-            fieldnames = TaobaoCommentItem().keys()
+            f = open('./data/taobao_comment'+self.str_date+'.csv','w+')
+            fieldnames = TaobaoCommentItem().fields
             self.taobao_comment = csv.DictWriter(f,fieldnames=fieldnames)
             self.taobao_comment.writeheader()
 
         elif spider.name == "tm_spider" :
-            f = open('tmall_item.csv','w')
-            fieldnames = ['Salesvolume', 'Storename', 'Commentpage', 'Price', 'Itemnid', 'Searchterms', 'Commentcount', 'Itemwords', 'Itemlink']
+            f = open('./data/tmall_item'+self.str_date+'.csv','w+')
+            fieldnames = TmallItem().fields
             self.tmall_item = csv.DictWriter(f,fieldnames=fieldnames)
             self.tmall_item.writeheader()
 
-            f = open('tmall_comment.csv','w')
-            fieldnames = ['UserName', 'Commenttimestamp', 'Commentdate', 'Itemnid', 'Searchterms', 'Conntent', 'Tradeendtimestamp', 'Setmeal']
+            f = open('./data/tmall_comment'+self.str_date+'.csv','w+')
+            fieldnames = TmallCommentItem().fields
             self.tmall_comment = csv.DictWriter(f,fieldnames=fieldnames)
             self.tmall_comment.writeheader()
 

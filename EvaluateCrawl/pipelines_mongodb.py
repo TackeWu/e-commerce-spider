@@ -4,6 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from EvaluateCrawl.dbs import NemoCfgMongoClient
 from EvaluateCrawl.items import TaobaoItem,TmallItem,TmallCommentItem,TaobaoCommentItem
 from EvaluateCrawl.items import JDItem,JDCommentItem
 
@@ -14,7 +15,7 @@ class SpiderPipeline(object):
     mongo_db_jd = "data_jd"
 
     def open_spider(self,spider):
-        self.client = NemoCfgMongoClient() #monogo config
+        self.client = NemoCfgMongoClient()
         self.db_ali = self.client[self.mongo_db_ali]
         self.db_jd = self.client[self.mongo_db_jd]
         if spider.name == "jd_spider":

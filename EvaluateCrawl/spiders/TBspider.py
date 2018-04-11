@@ -13,7 +13,7 @@ from EvaluateCrawl.items import TaobaoItem,TaobaoCommentItem
 
 class Spider(scrapy.Spider):
     name = 'tb_spider'
-    allowed_domains = ['taobao.com','tmall.com','rate.tmall.com','s.taobao.com']
+    allowed_domains = ['taobao.com','tmall.com','rate.tmall.com','s.taobao.com','rate.taobao.com']
 
     def start_requests(self):
         for query in ALI_QUERY_WORDS:

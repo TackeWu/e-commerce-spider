@@ -16,7 +16,7 @@ class Spider(scrapy.Spider):
 
     def start_requests(self):
         for query in ALI_QUERY_WORDS:
-            query_url = "https://list.tmall.com/search_product.htm?q="+str(query)+"&sort=d&style=g&industryCatId=all"
+            query_url = "https://list.tmall.com/search_product.htm?q="+str(query)+"&sort=d&style=g"
             yield scrapy.Request(query_url,callback=self.Item_parse,meta={"query_words":query},encoding='utf-8')
 
 
@@ -33,7 +33,7 @@ class Spider(scrapy.Spider):
         item['Commentcount'] = []
 
         ItemList = response.xpath('//div[@id="J_ItemList"]')
-        for sub_div in ItemList.xpath('.//div[@class="product item-1111 "]'):
+        for sub_div in ItemList.xpath('.//div[@class="product  "]'):
             item['Searchterms'].append(response.meta['query_words'])
             item['Storename'].append(sub_div.xpath('.//span[@data-icon="small"]/@data-nick').extract()[0])
             item['Itemwords'].append(sub_div.xpath('.//p[@class="productTitle"]/a/@title').extract()[0])
