@@ -1,12 +1,7 @@
 #!/bin/bash
-
-VENV=virtualenv
-OPT='-p python'
-VENVNAME=`basename "$PWD"`
-VENVPATH="$HOME/venv/$VENVNAME"
+Miniconda2_dir="$HOME/miniconda2"
 DATA_DIR="./data"
 LOGS_DIR="./logs"
-. $VENVPATH/bin/activate
 date=$(date "+%m_%d")
 
 if [ ! -d $DATA_DIR ];then
@@ -24,15 +19,16 @@ fi
 jd_spider(){
     echo "正在爬取京东数据......"
     jd_log_dir="./logs/jd_run_$date.log"
-    scrapy crawl jd_spider > $jd_log_dir 2>&1
+    $Miniconda2_dir/bin/scrapy crawl jd_spider > $jd_log_dir 2>&1
     echo "京东数据爬取完成"
     echo -e "\n"
+
 }
 
 tm_spider(){
     echo "正在爬取天猫数据......"
     tm_log_dir="./logs/tm_run_$date.log"
-    scrapy crawl tm_spider > $tm_log_dir 2>&1
+    $Miniconda2_dir/bin/scrapy crawl tm_spider > $tm_log_dir 2>&1
     echo "天猫数据爬取完成"
     echo -e "\n"
 }
@@ -40,7 +36,7 @@ tm_spider(){
 tb_spider(){
     echo "正在爬取淘宝数据......"
     tb_log_dir="./logs/tb_run_$date.log"
-    scrapy crawl tb_spider > $tb_log_dir 2>&1
+    $Miniconda2_dir/bin/scrapy crawl tb_spider > $tb_log_dir 2>&1
     echo "淘宝数据爬取完成"
     echo -e "\n"
 }
